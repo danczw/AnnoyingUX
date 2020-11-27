@@ -32,8 +32,8 @@ body {
 }
 
 .canvas {
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 90%;
     padding: 10px;
     margin: auto;
     display: flex;
@@ -41,27 +41,18 @@ body {
     align-items: center;
 }
 
-.start {
-    width: 50%;
-    margin: auto;
-    border: 1px solid #084c61;
+.svg1 {
+    width: 90%;
+    height: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.startButton {
-    width: 151px;
-    height: 151px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: bounceStartButton 0.7s;
+    /* animation: bouncesvg1 0.7s; */
     animation-direction: alternate;
     animation-iteration-count: infinite;
 }
-
-@keyframes bounceStartButton {
+/* 
+@keyframes bouncesvg1 {
     0% { transform: translateY(0); }
     100% { transform: translateY(-50px); }
-}
+} */
