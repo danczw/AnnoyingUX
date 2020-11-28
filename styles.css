@@ -22,7 +22,7 @@ html {
 }
 
 body {
-    background-color: #177e89;
+    background-image: linear-gradient(#177e89, #177e89, #105c64);
     width: 100%;
     height: 100%;
     margin: auto;
