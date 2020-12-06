@@ -326,23 +326,9 @@ const defs = svg1.append('defs');
 //         };
 //         lBar();
 //     });
-roboTransition()
-// are you a robot?
-function roboTransition() {
-    const robotQuestion = svg1.append('text')
-        .attr('id', 'robotQuestion')
-        .text('You are not a robot, are you?')
-        .attr('x', 0)
-        .attr('y', svgHeight / 4)
-        .attr('font-size', 20)
-        .style('text-anchor', 'middle')
-        .style('fill', 'transparent');
-    robotQuestion.transition()
-        .style('fill', 'white')
-        .attr('x', svgWidth / 3)
-        .delay(1000)
-        .duration(200); 
 
+// are you a robot?
+function roboTask() {
     const robotShadow = svg1.append('ellipse')
         .attr('id', 'robotShadow')
         .attr('cx', screenMidX)
@@ -366,18 +352,18 @@ function roboTransition() {
         .attr('offset', '100%')
         .attr('stop-color', '#323031')
         .attr('stop-opacity', 0);
-    
-    const robotGroup = svg1.append('svg:g')
-        .attr('id', 'robotGroup')
 
-    const robotText = robotGroup.append('text')
+    const robotText = svg1.append('text')
         .attr('id', 'robotText')
-        .text('Select all grey-ish shapes.')
+        .text('Select all grey-ish shapes...')
         .attr('x', screenMidX)
-        .attr('y', screenMidY - 90)
+        .attr('y', screenMidY + 290)
         .attr('font-size', 17)
         .style('text-anchor', 'middle')
-        .style('fill', 'transparent');  
+        .style('fill', 'white');  
+
+    const robotGroup = svg1.append('svg:g')
+        .attr('id', 'robotGroup')
 
     const colours = ['#bb9f06', '#db3a34', '#86a873', '#323031']
     function colour() {
@@ -447,11 +433,8 @@ function roboTransition() {
             .on('end', RobotBounceDown);
         robotShadow.transition()
             .duration(3000)
-            .attr('rx', 170)
-            .attr('ry', 11)
-        robotText.transition()
-            .style('fill', 'white')
-            .duration(3000); ;
+            .attr('rx', 150)
+            .attr('ry', 9);
     };
     function RobotBounceDown() {
         robotGroup.transition()
@@ -461,13 +444,45 @@ function roboTransition() {
             .on('end', RobotBounceUp);
         robotShadow.transition()
             .duration(3000)
-            .attr('rx', 180)
-            .attr('ry', 15);
+            .attr('rx', 160)
+            .attr('ry', 14);
     };
     robotGroup.transition()
         .delay(1000)
         .duration(0)
         .on('end', RobotBounceUp)
 };
+
+function roboTransition() {
+    const robotQuestion = svg1.append('text')
+        .attr('id', 'robotQuestion')
+        .text('')
+        .attr('x', svgWidth / 3)
+        .attr('y', svgHeight / 3)
+        .attr('font-size', 25)
+        .style('text-anchor', 'middle')
+        .style('fill', 'white');
+    
+    var i = 0;
+    const txt = 'You are not a robot, are you?';
+    function typeWriter(roboTask) {
+        if (i < txt.length - 11) {
+            document.getElementById("robotQuestion").innerHTML += txt.charAt(i);
+            i++;
+            setTimeout(typeWriter, 200);
+        } else if (i < txt.length - 10) {
+            document.getElementById("robotQuestion").innerHTML += txt.charAt(i);
+            i++;
+            setTimeout(typeWriter, 1000);
+        } else if (i < txt.length) {
+            document.getElementById("robotQuestion").innerHTML += txt.charAt(i);
+            i++;
+            setTimeout(typeWriter, 0);
+        };
+    };
+    typeWriter();
+};
+
+roboTransition()
 
 // TODO: on press disapear if grey, else reshuffle
