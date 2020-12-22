@@ -701,7 +701,7 @@ function scrollDown() {
         svgTwoDocElem.className = 'svg'
         svgTwoDocElem.id = 'svgTwo'
         canvasTwo.appendChild(svgTwoDocElem)
-        const svgTwo = d3.select('#svgOne');
+        const svgTwo = d3.select('#svgTwo');
 
         const startScrollOptions = {
             threshold: 0.5,
@@ -711,18 +711,7 @@ function scrollDown() {
             entries, startScroll) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        svgOne.append('rect')
-                            .attr('id', 'approveBG')
-                            .attr('width', svgWidth)
-                            .attr('height', svgHeight)
-                            .attr('fill', 'black')
-                            .style('opacity', 0.3);
-                        svgTwo.append('rect')
-                            .attr('id', 'approveBG')
-                            .attr('width', svgWidth)
-                            .attr('height', svgHeight)
-                            .attr('fill', 'black')
-                            .style('opacity', 0.3)
+                        alert('Error: Nothing has gone wrong! Keep scrolling...')
                     };
                 })
             }, startScrollOptions
@@ -748,4 +737,12 @@ function scrollDown() {
     };
     setTimeout(newSvg, 2000)
 };
-// scrollDown();
+
+// const passwordText = svgTwo.append('text')
+//         .attr('id', 'passwordText')
+//         .attr('x', 10)
+//         .attr('y', 10)
+//         .style('text-anchor', 'middle')
+//         .style('fill', 'transparent')
+//         .attr('font-size', 30)
+//         .text('Enter a password:');
