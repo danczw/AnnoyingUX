@@ -9,8 +9,8 @@ const colorEight = '#db3a34' // red
 const colorNine = '#ffc857' // yellow
 const colorTen = '#323031' // dark grey
 
-const svg1selector = document.querySelector('.svg1');
-const svgRect = svg1selector.getBoundingClientRect();
+const svgselector = document.getElementById('svgOne');
+const svgRect = svgselector.getBoundingClientRect();
 const svgWidth = svgRect.width;
 const svgHeight = svgRect.height;
 
@@ -22,26 +22,26 @@ var buttonTextX = buttonX
 var buttonTextY = buttonY + 50
 var buttonShadowX = buttonX
 var buttonShadowY = buttonY + 40
-const svg1 = d3.select('.svg1');
-const defs = svg1.append('defs');
+const svgOne = d3.select('#svgOne');
+const defs = svgOne.append('defs');
 
 // function for random colour picking
 const robotAllColors = [colorFour, colorFive, colorEight, colorTen];
 const robotSomeColors = [colorFour, colorFive, colorEight]
-const glitchAllColors = [colorOne, colorTwo, colorThree]
+const glitchAllColors = [colorOne, colorTwo, colorThree, 'white']
 function randColour(colourList) {
     return colourList[Math.floor(Math.random() * colourList.length)];
 };
 
 // change website background color
 function websiteBackground(colour, speed) {
-    const backgrCircle1 = svg1.append('circle')
+    const backgrCircle1 = svgOne.append('circle')
         .attr('id', 'backgrCircle')
         .attr('cx', screenMidX)
         .attr('cy', screenMidY)
         .attr('r', 1)
         .attr('fill', colour)
-    const backgrCircle2 = svg1.append('circle')
+    const backgrCircle2 = svgOne.append('circle')
         .attr('id', 'backgrCircle')
         .attr('cx', screenMidX)
         .attr('cy', screenMidY)
@@ -74,7 +74,7 @@ function websiteBackground(colour, speed) {
         
     function websiteColour() {
         document.body.style.backgroundColor = colour;
-        svg1.selectAll('#backgrCircle').remove();
+        svgOne.selectAll('#backgrCircle').remove();
     };
 };
 
@@ -89,52 +89,28 @@ function buttonXY() {
 };
 
 // glitch function
-const polyPoints = [0,50, 100,60, 200,75, 195,85, 220,95, 200,102,
-    175,117, 155,129, 170,133, 100,143, 70,125, 50,90, -10,70]
-
-function glitch(glitchPoints, amount, waitTime) {
-    function pointGeneratorShadow(point, index, arr) {
-        if (index % 2 == 0) {
-            arr[index] = point + Math.random() * 20 + randomXCoord;
-        } else {
-            arr[index] = point + Math.random() * 50 + randomYCoord;
-        };
-    };
-    function pointGenerator(point, index, arr) {
-        arr[index] = point - 8;
-    };
+function glitch(wait) {
+    svgOne.append('rect')
+        .attr('id', 'glitchBackground')
+        .attr('width', svgWidth)
+        .attr('height', svgHeight)
+        .attr('fill', 'black');
     
-    while (amount > 0) {
-        points = [...glitchPoints];
-        var randomXCoord = Math.random() * svgWidth * 0.95;
-        var randomYCoord = Math.random() * svgHeight * 0.95;
-        points.forEach(pointGeneratorShadow);
-        svg1.append('polygon')
-            .attr('id', 'glitchPolygonShadow')
-            .attr('points', `${points[0]},${points[1]} ${points[2]},${points[3]}
-                 ${points[4]},${points[5]} ${points[6]},${points[7]}
-                 ${points[8]},${points[9]} ${points[10]},${points[11]}
-                 ${points[12]},${points[13]} ${points[14]},${points[15]}
-                 ${points[16]},${points[17]} ${points[18]},${points[19]}
-                 ${points[20]},${points[21]} ${points[22]},${points[23]}
-                 ${points[24]},${points[25]}`)
-            .attr('stroke', 'transparent')
+    function glitchRect(glitchRectY) {
+        svgOne.append('rect')
+            .attr('id', 'glitchRect')
+            .attr('y', glitchRectY)
+            .attr('width', svgWidth)
+            .attr('height', 1)
             .attr('fill', randColour(glitchAllColors));
-        points.forEach(pointGenerator);
-        svg1.append('polygon')
-            .attr('id', 'glitchPolygon')
-            .attr('points', `${points[0]},${points[1]} ${points[2]},${points[3]}
-                ${points[4]},${points[5]} ${points[6]},${points[7]}
-                ${points[8]},${points[9]} ${points[10]},${points[11]}
-                ${points[12]},${points[13]} ${points[14]},${points[15]}
-                ${points[16]},${points[17]} ${points[18]},${points[19]}
-                ${points[20]},${points[21]} ${points[22]},${points[23]}
-                ${points[24]},${points[25]} ${points[26]},${points[27]}`)
-            .attr('stroke', 'transparent')
-            .attr('fill', randColour(glitchAllColors));
-        amount --;
     };
-    setTimeout(() => svg1.selectAll('#glitchPolygonShadow, #glitchPolygon').remove(), waitTime);
+
+    var glitchList = [];
+    for (i = 0; i < 300; i++) {
+        glitchList.push(Math.floor(Math.random() * svgHeight))
+    }
+    glitchList.forEach(glitchRect)
+    setTimeout(() => svgOne.selectAll('#glitchRect, #glitchBackground').remove(), wait);
 
 };
 
@@ -160,7 +136,7 @@ function buttonTransition(speed) {
 };
 
 // welcome text
-const welcomeText = svg1.append('text')
+const welcomeText = svgOne.append('text')
         .attr('id', 'welcomeText')
         .attr('x', screenMidX)
         .attr('y', screenMidY / 3)
@@ -170,7 +146,7 @@ const welcomeText = svg1.append('text')
         .text('Welcome!');
 
 // Define button
-const button = svg1.append('circle')
+const button = svgOne.append('circle')
     .attr('id', 'startButton')
     .attr('cx', buttonX)
     .attr('cy', buttonY)
@@ -193,7 +169,7 @@ buttonGradient.append('stop')
     .attr('stop-opacity', 0.6);
 
 // Define button pulse
-const buttonPulse = svg1.append('circle')
+const buttonPulse = svgOne.append('circle')
     .attr('id', 'buttonPulse')
     .attr('cx', buttonX)
     .attr('cy', buttonY)
@@ -218,12 +194,12 @@ buttonPulseGradient.append('stop')
     .attr('stop-opacity', 0);
 
 // Define button text
-var buttonTextPath = svg1.append('path')
+var buttonTextPath = svgOne.append('path')
     .attr('id', 'buttonPath')
     // M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
     .attr('d', `M${buttonX-30},${buttonY+260} A150,150 0 1,1 ${buttonX+30},${buttonY+260}`)
     .style('fill', 'none')
-const buttonText = svg1.append('text')
+const buttonText = svgOne.append('text')
     .attr('id', 'buttonText')
     .append('textPath')
     .attr('xlink:href', '#buttonPath')
@@ -234,7 +210,7 @@ const buttonText = svg1.append('text')
     .style('text-anchor','middle');
 
 // Define the shadow and gradient
-const buttonShadow = svg1.append('ellipse')
+const buttonShadow = svgOne.append('ellipse')
     .attr('id', 'buttonShadow')
     .attr('cx', buttonShadowX)
     .attr('cy', buttonShadowY)
@@ -307,7 +283,7 @@ var counter = 0
 
 d3.selectAll('#buttonPulse, #startButton')
     .on('mouseover', function() {
-        svg1.selectAll('#welcomeText').remove();
+        svgOne.selectAll('#welcomeText').remove();
         if (counter < 3) {
             buttonXY();
             buttonTransition(0);
@@ -329,8 +305,8 @@ d3.selectAll('#buttonPulse, #startButton')
             counter += 1; 
         } else if (counter < 7) {
             buttonXY();
-            buttonTransition(1000);
-            svg1.selectAll('#buttonPulse').remove();
+            buttonTransition(500);
+            svgOne.selectAll('#buttonPulse').remove();
             buttonText.transition()
                 .text('Click me already!');
             counter += 1;
@@ -340,7 +316,7 @@ d3.selectAll('#buttonPulse, #startButton')
 // loading bar after button click
 function lBar() {
     var lBarWidth = svgWidth * 0.01
-    const loadingBarFull = svg1.append('rect')
+    const loadingBarFull = svgOne.append('rect')
         .attr('id', 'loadingBarFull')
         .attr('x', screenMidX - ((svgWidth * 0.95) / 2))
         .attr('y', screenMidY)
@@ -348,7 +324,7 @@ function lBar() {
         .attr('height', 10)
         .attr('fill', '#177e89')
         .attr('rx', 4);
-    const loadingBar = svg1.append('rect')
+    const loadingBar = svgOne.append('rect')
         .attr('id', 'loadingBar')
         .attr('x', screenMidX - (lBarWidth / 2))
         .attr('y', screenMidY)
@@ -356,7 +332,7 @@ function lBar() {
         .attr('height', 10)
         .attr('fill', colorNine)
         .attr('rx', 4);
-    const loadingText = svg1.append('text')
+    const loadingText = svgOne.append('text')
         .attr('id', 'loadingText')
         .attr('x', screenMidX)
         .attr('y', screenMidY - 30)
@@ -405,32 +381,33 @@ function lBar() {
             .delay(delay)
             .duration(duration)
             .attr('x', screenMidX - ((svgWidth * multiplier) / 2))
-            .attr('width', svgWidth * multiplier);
+            .attr('width', svgWidth * multiplier)
+            .ease(d3.easeQuadInOut);
     };
 
     function loadingBarSequence() {
-        loadingBarTransition(1000, 1000, 0.02);
-        loadingBarTransition(2000, 2000, 0.035);
-        loadingBarTransition(4000, 1000, 0.06);
-        loadingBarTransition(5000, 2000, 0.1);
-        loadingBarTransition(7000, 2000, 0.3);
-        loadingBarTransition(9000, 2000, 0.6);
-        loadingBarTransition(11000, 4000, 0.45);
-        loadingBarTransition(15000, 1500, 0.7);
-        loadingBarTransition(16500, 2000, 0.93);
-        loadingBarTransition(18500, 4500, 0.95);
+        loadingBarTransition(500, 1000, 0.02);
+        loadingBarTransition(1500, 2000, 0.035);
+        loadingBarTransition(3500, 800, 0.06);
+        loadingBarTransition(4300, 1500, 0.1);
+        loadingBarTransition(5800, 1800, 0.3);
+        loadingBarTransition(7600, 2000, 0.6);
+        loadingBarTransition(9600, 5000, 0.45);
+        loadingBarTransition(14600, 1500, 0.7);
+        loadingBarTransition(16100, 2000, 0.93);
+        loadingBarTransition(18100, 4500, 0.95);
         loadingBar.transition()
-            .delay(23000)
+            .delay(22600)
             .duration(2000)
             .attr('x', screenMidX - ((svgWidth * 0.95) / 2))
             .attr('width', svgWidth * 0.95)
             .attr('fill', colorTen);
         loadingBar.transition()
-            .delay(25000)
+            .delay(24500)
             .duration(1000)
             .attr('fill', 'transparent');
         loadingBarFull.transition()
-            .delay(25000)
+            .delay(24500)
             .duration(1000)
             .attr('fill', 'transparent')
             .on('end', robotTransition); // on end of loading bar call robot task
@@ -440,21 +417,13 @@ function lBar() {
     loadingBarSequence();
 };
 
-// TODO: Click me already ... double click...
-// d3.selectAll('#startButton, #buttonPulse')
-//     .on('click', function() {
-//         buttonText.transition()
-//             .text('I am tired. Double click me already!')
-//             .duration(1000)
-//     });
-
-// remove button and play loading bar once button is double clicked
+// remove button and play loading bar once button is clicked
 d3.selectAll('#startButton, #buttonPulse')
     .on('click', function() {
         if (counter == 7) {
-            svg1.selectAll('#startButton').remove()
-            svg1.selectAll('#buttonText').remove()
-            svg1.selectAll('#buttonShadow').remove()
+            svgOne.selectAll('#startButton').remove()
+            svgOne.selectAll('#buttonText').remove()
+            svgOne.selectAll('#buttonShadow').remove()
         };
         websiteBackground(colorSeven, 3000);
         lBar();
@@ -462,7 +431,7 @@ d3.selectAll('#startButton, #buttonPulse')
 
 // are you a robot?
 function robotTransition() {
-    const robotQuestion = svg1.append('text')
+    const robotQuestion = svgOne.append('text')
         .attr('id', 'robotQuestion')
         .text('')
         .attr('x', svgWidth / 3)
@@ -482,9 +451,9 @@ function robotTransition() {
         } else if (i < txt.length - 10) {
             document.getElementById("robotQuestion").innerHTML += txt.charAt(i);
             i++;
-            setTimeout(() => glitch(polyPoints, 100, 100), 400);
-            setTimeout(() => glitch(polyPoints, 100, 300), 700);
-            setTimeout(() => glitch(polyPoints, 100, 200), 1100);
+            setTimeout(() => glitch(100), 400);
+            setTimeout(() => glitch(300), 700);
+            setTimeout(() => glitch(200), 1100);
             setTimeout(typeWriter, 2000);
         } else if (i < txt.length) {
             document.getElementById("robotQuestion").innerHTML += txt.charAt(i);
@@ -498,7 +467,7 @@ function robotTransition() {
 
 var robotTaskCounter = 5
 function robotTaskPrep() {
-    const robotGroup = svg1.append('svg:g')
+    const robotGroup = svgOne.append('svg:g')
         .attr('id', 'robotGroup')
     
     // create svg elements positioned in a square for robot task
@@ -560,7 +529,7 @@ function robotTaskPrep() {
     robotRotateRects.forEach(createRobotRotateRect);
 
     // shadow for robot element group
-    const robotShadow = svg1.append('ellipse')
+    const robotShadow = svgOne.append('ellipse')
         .attr('id', 'robotShadow')
         .attr('cx', screenMidX)
         .attr('cy', screenMidY + 200)
@@ -584,7 +553,7 @@ function robotTaskPrep() {
         .attr('stop-opacity', 0);
 
     // text for robot task
-    const robotText = svg1.append('text')
+    const robotText = svgOne.append('text')
         .attr('id', 'robotText')
         .text('Select enough grey-ish shapes...')
         .attr('x', screenMidX)
@@ -592,7 +561,7 @@ function robotTaskPrep() {
         .attr('font-size', 15)
         .style('text-anchor', 'middle')
         .style('fill', 'white');
-    const taskCounterText = svg1.append('text')
+    const taskCounterText = svgOne.append('text')
         .attr('id', 'taskCounterText')
         .text(robotTaskCounter)
         .attr('x', screenMidX * 1.5)
@@ -608,7 +577,7 @@ function robotTaskPrep() {
             if (colourCounter > 2) {
                 d3.select(this).transition()
                     .duration(Math.floor(Math.random() * 2000))
-                    .attr('fill', randColour(robotAllColors));
+                    .attr('fill', randColour(robotSomeColors));
                 colourCounter --;
             } else {
                 d3.select(this).transition()
@@ -652,25 +621,28 @@ function robotTaskPrep() {
     robotItemClick();
 };
 
-var robotRemoveCounter = 0
+// add event listener to change color on hove for all items
 function robotItemHover() {
     const robotItemArray = document.querySelectorAll('#robotRect, #robotCircle, #robotRotateRect');
     robotItemArray.forEach(function(elem) {
         elem.addEventListener('mouseover', robotItemColor);
     });
 };
+// change item color randomly on hover if not grey
 function robotItemColor(elem) {
     if (d3.select(this).attr('fill') != 'rgb(50, 48, 49)') { // if item is not grey change color on hover
         d3.select(this).transition()
             .attr('fill', randColour(robotAllColors));
     };
 };
+// if item grey and click change counter
 function robotItemClick() {
     const robotItemArray = document.querySelectorAll('#robotRect, #robotCircle, #robotRotateRect');
     robotItemArray.forEach(function(elem) {
         elem.addEventListener('click', robotItemRemove);
     });
 };
+// roboTask: click and remove 5 grey-ish items to pass robot exam
 function robotItemRemove(elem) {
     if ((d3.select(this).attr('fill') == 'rgb(50, 48, 49)') && (robotTaskCounter > 1)) {
         d3.select(this).remove();
@@ -697,13 +669,83 @@ function robotItemRemove(elem) {
             .attr('font-size', svgWidth * 8)
             .attr('y', screenMidY * 10)
             .duration(3000)
-            .on('end', nextTask);
+            .on('end', scrollDown); // on end add scrolldown transition
     };
 };
+scrollDown();
+function scrollDown() {
+    svgOne.selectAll('#robotGroup, #taskCounterText, #robotShadow').remove();
+    websiteBackground('white', 3000); // change website background with transition effect
 
-function nextTask() {
-    svg1.selectAll('#robotGroup, #taskCounterText, #robotShadow').remove();
-    websiteBackground('white', 5000);
+    const scrollDownText = svgOne.append('text')
+        .attr('id', 'scrollDownText')
+        .attr('x', screenMidX)
+        .attr('y', screenMidY / 3)
+        .style('text-anchor', 'middle')
+        .style('fill', 'transparent')
+        .attr('font-size', 30)
+        .text('Scroll all the way down.');
+    d3.select('#scrollDownText').transition() 
+        .style('fill', 'black')
+        .duration(2000)
+        .delay(300);
+    
+    // add new svg below first for scroll down, on scroll down start next task
+    function newSvg() {
+        var canvasTwo = document.createElement('div')
+        canvasTwo.className = 'canvas'
+        canvasTwo.id = 'canvasTwo'    
+        document.body.appendChild(canvasTwo)
+        
+        var svgTwoDocElem = document.createElement('svg')
+        svgTwoDocElem.className = 'svg'
+        svgTwoDocElem.id = 'svgTwo'
+        canvasTwo.appendChild(svgTwoDocElem)
+        const svgTwo = d3.select('#svgOne');
+
+        const startScrollOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px 0px 0px'
+        };
+        const startScroll = new IntersectionObserver(function(
+            entries, startScroll) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        svgOne.append('rect')
+                            .attr('id', 'approveBG')
+                            .attr('width', svgWidth)
+                            .attr('height', svgHeight)
+                            .attr('fill', 'black')
+                            .style('opacity', 0.3);
+                        svgTwo.append('rect')
+                            .attr('id', 'approveBG')
+                            .attr('width', svgWidth)
+                            .attr('height', svgHeight)
+                            .attr('fill', 'black')
+                            .style('opacity', 0.3)
+                    };
+                })
+            }, startScrollOptions
+        );
+        startScroll.observe(canvasTwo);
+
+        const finishScrollOptions = {
+            threshold: 0.95,
+            rootMargin: '0px 0px 0px 0px'
+        };
+        const finishScroll = new IntersectionObserver(function(
+            entries, finishScroll) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        document.getElementById('canvasOne').innerHTML='';
+                        var canvasOne = document.getElementById('canvasOne');
+                        canvasOne.parentNode.removeChild(canvasOne);
+                    };
+                })
+            }, finishScrollOptions
+        );
+        finishScroll.observe(canvasTwo);
+    };
+    setTimeout(newSvg, 2000)
 };
-
-// TODO: learn callback for ;
+// scrollDown();
