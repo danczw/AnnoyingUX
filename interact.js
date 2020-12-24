@@ -80,7 +80,7 @@ function websiteBackground(colour, speed) {
 
 // randomizing x and y coordinates
 function buttonXY() {
-    buttonX = ((svgWidth-60) * Math.random()) + 40
+    buttonX = ((svgWidth-60) * Math.random()) + 60
     buttonY = ((svgHeight-200) * Math.random()) + 100
     buttonTextX = buttonX
     buttonTextY = buttonY + 50
@@ -737,12 +737,3 @@ function scrollDown() {
     };
     setTimeout(newSvg, 2000)
 };
-
-// const passwordText = svgTwo.append('text')
-//         .attr('id', 'passwordText')
-//         .attr('x', 10)
-//         .attr('y', 10)
-//         .style('text-anchor', 'middle')
-//         .style('fill', 'transparent')
-//         .attr('font-size', 30)
-//         .text('Enter a password:');
