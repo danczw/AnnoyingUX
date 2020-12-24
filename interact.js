@@ -9,8 +9,8 @@ const colorEight = '#db3a34' // red
 const colorNine = '#ffc857' // yellow
 const colorTen = '#323031' // dark grey
 
-const svgselector = document.getElementById('svgOne');
-const svgRect = svgselector.getBoundingClientRect();
+const svgOneSelector = document.getElementById('svgOne');
+const svgRect = svgOneSelector.getBoundingClientRect();
 const svgWidth = svgRect.width;
 const svgHeight = svgRect.height;
 
@@ -134,6 +134,8 @@ function buttonTransition(speed) {
         .attr('cx', buttonShadowX)
         .attr('cy', buttonShadowY);
 };
+
+// CONTENT //
 
 // welcome text
 const welcomeText = svgOne.append('text')
@@ -417,7 +419,7 @@ function lBar() {
     loadingBarSequence();
 };
 
-// remove button and play loading bar once button is clicked
+// remove button and play loading bar sequence once button is clicked
 d3.selectAll('#startButton, #buttonPulse')
     .on('click', function() {
         if (counter == 7) {
@@ -451,6 +453,7 @@ function robotTransition() {
         } else if (i < txt.length - 10) {
             document.getElementById("robotQuestion").innerHTML += txt.charAt(i);
             i++;
+            // robot glitch effect:
             setTimeout(() => glitch(100), 400);
             setTimeout(() => glitch(300), 700);
             setTimeout(() => glitch(200), 1100);
@@ -462,7 +465,7 @@ function robotTransition() {
         };
     };
     typeWriter();
-    setTimeout(robotTaskPrep, 6000) // start robot task after text is writen
+    setTimeout(robotTaskPrep, 6000) // initialize robot task after text is writen
 };
 
 var robotTaskCounter = 5
@@ -616,7 +619,7 @@ function robotTaskPrep() {
         .duration(0)
         .on('end', RobotBounceUp)
     
-    // call actual robotask
+    // call actual robotask items
     robotItemHover();
     robotItemClick();
 };
@@ -635,7 +638,7 @@ function robotItemColor(elem) {
             .attr('fill', randColour(robotAllColors));
     };
 };
-// if item grey and click change counter
+// if item grey and event click change counter
 function robotItemClick() {
     const robotItemArray = document.querySelectorAll('#robotRect, #robotCircle, #robotRotateRect');
     robotItemArray.forEach(function(elem) {
@@ -683,14 +686,14 @@ function scrollDown() {
         .attr('y', screenMidY / 3)
         .style('text-anchor', 'middle')
         .style('fill', 'transparent')
-        .attr('font-size', 30)
+        .style('font-size', '30px')
         .text('Scroll all the way down.');
     d3.select('#scrollDownText').transition() 
         .style('fill', 'black')
         .duration(2000)
-        .delay(300);
+        .delay(2000);
     
-    // add new svg below first for scroll down, on scroll down start next task
+    // add new svg below first for scroll down, on scroll down start loading circle
     function newSvg() {
         var canvasTwo = document.createElement('div')
         canvasTwo.className = 'canvas'
@@ -703,6 +706,15 @@ function scrollDown() {
         canvasTwo.appendChild(svgTwoDocElem)
         const svgTwo = d3.select('#svgTwo');
 
+        const scrollUpText = svgTwo.append('text')
+            .attr('id', 'scrollUpText')
+            .attr('x', screenMidX)
+            .attr('y', screenMidY / 3)
+            .style('text-anchor', 'middle')
+            .style('color', 'transparent')
+            .style('font-size', '30px')
+            .text('You can scroll back up...');
+
         const startScrollOptions = {
             threshold: 0.5,
             rootMargin: '0px 0px 0px 0px'
@@ -711,29 +723,125 @@ function scrollDown() {
             entries, startScroll) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        alert('Error: Nothing has gone wrong! Keep scrolling...')
+                        alert('Error: Nothing has gone wrong! Keep scrolling...');
+                        startScroll.unobserve(canvasTwo);
                     };
                 })
             }, startScrollOptions
         );
         startScroll.observe(canvasTwo);
 
-        const finishScrollOptions = {
+        const finishDownScrollOptions = {
             threshold: 0.95,
             rootMargin: '0px 0px 0px 0px'
         };
-        const finishScroll = new IntersectionObserver(function(
-            entries, finishScroll) {
+        const finishDownScroll = new IntersectionObserver(function(
+            entries, finishDownScroll) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        document.getElementById('canvasOne').innerHTML='';
-                        var canvasOne = document.getElementById('canvasOne');
-                        canvasOne.parentNode.removeChild(canvasOne);
+                        finishDownScroll.unobserve(canvasTwo);
+                        scrollDownText.transition() 
+                            .text('Enter a passwort:');
+                        loadingCircles(svgTwo,20);
+                        loadingCircles(svgOne,20);
+                        scrollUpText.transition()
+                            .style('color', 'black')
+                            .duration(1000)
+                            .delay(20000);
+                        scrolledUp(pwRules);
                     };
                 })
-            }, finishScrollOptions
+            }, finishDownScrollOptions
         );
-        finishScroll.observe(canvasTwo);
+        finishDownScroll.observe(canvasTwo);
     };
-    setTimeout(newSvg, 2000)
+    setTimeout(newSvg, 2500)
+};
+
+function loadingCircles(svg, seconds) {
+    // TODO: circle do not show up on second svg
+    const loadCircleOne = svg.append('circle')
+        .attr('id', 'loadCircleOne')
+        .attr('cx', screenMidX - 15)
+        .attr('cy', screenMidY - 15)
+        .attr('r', 25)
+        .attr('fill', 'transparent');
+    const loadCircleTwo = svg.append('circle')
+        .attr('id', 'loadCircleTwo')
+        .attr('cx', screenMidX + 15)
+        .attr('cy', screenMidY - 15)
+        .attr('r', 25)
+        .attr('fill', 'transparent');
+    const loadCircleThree = svg.append('circle')
+        .attr('id', 'loadCircleThree')
+        .attr('cx', screenMidX + 15)
+        .attr('cy', screenMidY + 15)
+        .attr('r', 25)
+        .attr('fill', 'transparent');
+    const loadCircleFour = svg.append('circle')
+        .attr('id', 'loadCircleFour')
+        .attr('cx', screenMidX - 15)
+        .attr('cy', screenMidY + 15)
+        .attr('r', 25)
+        .attr('fill', 'transparent');
+
+    function loadingCircleTransition(circle, color, i) {
+        circle.transition()
+            .attr('fill', color)
+            .duration(800)
+            .delay(i*500+800);
+        circle.transition()
+            .attr('fill', 'transparent')
+            .duration(800)
+            .delay(i*500+1500);
+    };
+
+    var counter = 0;
+    var circleIndex = 1;
+    while (counter<seconds) {
+        if (circleIndex == 1) {
+            loadingCircleTransition(loadCircleOne, colorSeven, counter);
+            circleIndex = 2;
+        } else if (circleIndex == 2) {
+            loadingCircleTransition(loadCircleTwo, colorEight, counter);
+            circleIndex = 3;
+        } else if (circleIndex == 3) {
+            loadingCircleTransition(loadCircleThree, colorFive, counter);
+            circleIndex = 4;
+        } else if (circleIndex == 4) {
+            loadingCircleTransition(loadCircleFour, colorFour, counter);
+            circleIndex = 1;
+        };
+        counter ++;
+    }
+};
+
+function scrolledUp(callback) {
+    const finishUpScrollOptions = {
+        threshold: 0.95,
+        rootMargin: '0px 0px 0px 0px'
+    };
+    const finishUpScroll = new IntersectionObserver(function(
+        entries, finishUpScroll) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    var canvasTwo = document.getElementById('canvasTwo');
+                    canvasTwo.parentNode.removeChild(canvasTwo);
+                    callback();
+                };
+            })
+        }, finishUpScrollOptions
+    );
+    finishUpScroll.observe(canvasOne);
+};
+
+function pwRules() {
+    const pwRulesText = svgOne.append('text')
+        .attr('id', 'pwRulesText')
+        .attr('x', screenMidX)
+        .attr('y', screenMidY / 2)
+        .style('text-anchor', 'middle')
+        .style('color', 'black')
+        .style('font-size', '20px')
+        .text('test');
 };
