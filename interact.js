@@ -748,7 +748,7 @@ function scrollDown() {
                             .style('color', 'black')
                             .duration(1000)
                             .delay(20000);
-                        scrolledUp(pwRules);
+                        scrolledUp();
                     };
                 })
             }, finishDownScrollOptions
@@ -758,42 +758,42 @@ function scrollDown() {
     setTimeout(newSvg, 2500)
 };
 
-function loadingCircles(svg, seconds) {
+function loadingCircles(targetSvg, seconds) {
     // TODO: circle do not show up on second svg
-    const loadCircleOne = svg.append('circle')
+    const loadCircleOne = targetSvg.append('circle')
         .attr('id', 'loadCircleOne')
         .attr('cx', screenMidX - 15)
         .attr('cy', screenMidY - 15)
         .attr('r', 25)
         .attr('fill', 'transparent');
-    const loadCircleTwo = svg.append('circle')
+    const loadCircleTwo = targetSvg.append('circle')
         .attr('id', 'loadCircleTwo')
         .attr('cx', screenMidX + 15)
         .attr('cy', screenMidY - 15)
         .attr('r', 25)
         .attr('fill', 'transparent');
-    const loadCircleThree = svg.append('circle')
+    const loadCircleThree = targetSvg.append('circle')
         .attr('id', 'loadCircleThree')
         .attr('cx', screenMidX + 15)
         .attr('cy', screenMidY + 15)
         .attr('r', 25)
         .attr('fill', 'transparent');
-    const loadCircleFour = svg.append('circle')
+    const loadCircleFour = targetSvg.append('circle')
         .attr('id', 'loadCircleFour')
         .attr('cx', screenMidX - 15)
         .attr('cy', screenMidY + 15)
         .attr('r', 25)
         .attr('fill', 'transparent');
 
-    function loadingCircleTransition(circle, color, i) {
+    function loadingCircleTransition(circle, color, delayMultiplier) {
         circle.transition()
             .attr('fill', color)
             .duration(800)
-            .delay(i*500+800);
+            .delay(delayMultiplier*500+800);
         circle.transition()
             .attr('fill', 'transparent')
             .duration(800)
-            .delay(i*500+1500);
+            .delay(delayMultiplier*500+1500);
     };
 
     var counter = 0;
@@ -813,7 +813,8 @@ function loadingCircles(svg, seconds) {
             circleIndex = 1;
         };
         counter ++;
-    }
+    };
+    pwRules();
 };
 
 function scrolledUp(callback) {
@@ -836,12 +837,52 @@ function scrolledUp(callback) {
 };
 
 function pwRules() {
-    const pwRulesText = svgOne.append('text')
-        .attr('id', 'pwRulesText')
-        .attr('x', screenMidX)
+    const pwRulesTextOne = svgOne.append('text')
+        .attr('id', 'pwRulesTextOne')
+        .attr('x', screenMidX - 30)
         .attr('y', screenMidY / 2)
         .style('text-anchor', 'middle')
-        .style('color', 'black')
-        .style('font-size', '20px')
-        .text('test');
+        .style('fill', colorSix)
+        .style('font-size', '12px')
+        .text('The password must include:');
+    const pwRulesTextTwo = svgOne.append('text')
+        .attr('id', 'pwRulesTextTwo')
+        .attr('x', screenMidX - 100)
+        .attr('y', screenMidY / 2 + 22)
+        .style('text-anchor', 'left')
+        .style('fill', colorSix)
+        .style('font-size', '12px')
+        .text('- at least one upper case letter');
+    const pwRulesTextThree = svgOne.append('text')
+        .attr('id', 'pwRulesTextThree')
+        .attr('x', screenMidX - 100)
+        .attr('y', screenMidY / 2 + 44)
+        .style('text-anchor', 'left')
+        .style('fill', colorSix)
+        .style('font-size', '12px')
+        .text('- at least one lower case letter');
+    const pwRulesTextFour = svgOne.append('text')
+        .attr('id', 'pwRulesTextFour')
+        .attr('x', screenMidX - 100)
+        .attr('y', screenMidY / 2 + 66)
+        .style('text-anchor', 'left')
+        .style('fill', colorSix)
+        .style('font-size', '12px')
+        .text('- at least one number');
+    const pwRulesTextFive = svgOne.append('text')
+        .attr('id', 'pwRulesTextFive')
+        .attr('x', screenMidX - 100)
+        .attr('y', screenMidY / 2 + 88)
+        .style('text-anchor', 'left')
+        .style('fill', colorSix)
+        .style('font-size', '12px')
+        .text('- at least one special character: #+*-:,;_');
+    const pwRulesTextSix = svgOne.append('text')
+        .attr('id', 'pwRulesTextSix')
+        .attr('x', screenMidX - 100)
+        .attr('y', screenMidY / 2 + 110)
+        .style('text-anchor', 'left')
+        .style('fill', colorSix)
+        .style('font-size', '12px')
+        .text('- your favorite animal');
 };
