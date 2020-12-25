@@ -32,11 +32,10 @@ body {
     justify-content: center;
     align-items: center;
     position: absolute;
-    z-index: -1;
     animation-direction: alternate;
     animation-iteration-count: infinite;
 }
 
-/* .inputPW {
-
-} */
+.inputPW {
+    z-index: 1000;
+}

@@ -34,7 +34,7 @@ function randColour(colourList) {
 };
 
 // change website background color
-function websiteBackground(colour, speed) {
+function websiteBackground(colour=colorSix, speed) {
     const backgrCircle1 = svgOne.append('circle')
         .attr('id', 'backgrCircle')
         .attr('cx', screenMidX)
@@ -138,150 +138,148 @@ function buttonTransition(speed) {
 // CONTENT //
 
 // welcome text
-function welcomeTask() {
-    const welcomeText = svgOne.append('text')
-        .attr('id', 'welcomeText')
-        .attr('x', screenMidX)
-        .attr('y', screenMidY / 3)
-        .style('text-anchor', 'middle')
-        .style('fill', 'white')
-        .attr('font-size', 30)
-        .text('Welcome!');
+const welcomeText = svgOne.append('text')
+    .attr('id', 'welcomeText')
+    .attr('x', screenMidX)
+    .attr('y', screenMidY / 3)
+    .style('text-anchor', 'middle')
+    .style('fill', 'white')
+    .attr('font-size', 30)
+    .text('Welcome!');
 
-    // Define button
-    const button = svgOne.append('circle')
-        .attr('id', 'startButton')
-        .attr('cx', buttonX)
-        .attr('cy', buttonY)
+// Define button
+const button = svgOne.append('circle')
+    .attr('id', 'startButton')
+    .attr('cx', buttonX)
+    .attr('cy', buttonY)
+    .attr('r', 28)
+    .attr('fill', 'url(#buttonGradient)');
+var buttonGradient = defs.append('radialGradient')
+    .attr('id', 'buttonGradient')
+    .attr('x1', '0%')
+    .attr('x2', '100%')
+    .attr('y1', '0%')
+    .attr('y2', '100%')
+    .attr('spreadMethod', 'pad');
+buttonGradient.append('stop')
+    .attr('offset', '80%')
+    .attr('stop-color', colorTen)
+    .attr('stop-opacity', 1);
+buttonGradient.append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', colorTen)
+    .attr('stop-opacity', 0.6);
+
+// Define button pulse
+const buttonPulse = svgOne.append('circle')
+    .attr('id', 'buttonPulse')
+    .attr('cx', buttonX)
+    .attr('cy', buttonY)
+    .attr('r', 2)
+    .attr('fill', 'transparent')
+    .attr('stroke', 'url(#buttonPulseGradient)')
+    .attr('stroke-width', 15)
+var buttonPulseGradient = defs.append('radialGradient')
+    .attr('id', 'buttonPulseGradient')
+    .attr('x1', '0%')
+    .attr('x2', '50%')
+    .attr('y1', '0%')
+    .attr('y2', '100%')
+    .attr('spreadMethod', 'pad');
+buttonPulseGradient.append('stop')
+    .attr('offset', '50%')
+    .attr('stop-color', 'white')
+    .attr('stop-opacity', 0.5);
+buttonPulseGradient.append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', 'white')
+    .attr('stop-opacity', 0);
+
+// Define button text
+var buttonTextPath = svgOne.append('path')
+    .attr('id', 'buttonPath')
+    // M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
+    .attr('d', `M${buttonX-30},${buttonY+260} A150,150 0 1,1 ${buttonX+30},${buttonY+260}`)
+    .style('fill', 'none')
+const buttonText = svgOne.append('text')
+    .attr('id', 'buttonText')
+    .append('textPath')
+    .attr('xlink:href', '#buttonPath')
+    .text('Click me!')
+    .attr('font-size', 15)
+    .attr('startOffset', '50%')
+    .style('fill', colorNine)
+    .style('text-anchor','middle');
+
+// Define the shadow and gradient
+const buttonShadow = svgOne.append('ellipse')
+    .attr('id', 'buttonShadow')
+    .attr('cx', buttonShadowX)
+    .attr('cy', buttonShadowY)
+    .attr('rx', 35)
+    .attr('ry', 10)
+    .attr('fill', 'url(#shadowGradient)');
+var shadowGradient = defs.append('radialGradient')
+    .attr('id', 'shadowGradient')
+    .attr('x1', '0%')
+    .attr('x2', '100%')
+    .attr('y1', '0%')
+    .attr('y2', '100%')
+    .attr('spreadMethod', 'pad');
+shadowGradient.append('stop')
+    .attr('offset', '0%')
+    .attr('stop-color', colorTen)
+    .attr('stop-opacity', 0.6);
+shadowGradient.append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', colorTen)
+    .attr('stop-opacity', 0);
+
+// Loop bouncing animation of button
+function bounceUp() {
+    button.transition()
+        .duration(1500)
+        .attr('cy', buttonY - 70)
+        .ease(d3.easeCubic)
+        .on('end', bounceDown);
+    buttonPulse.transition()
+        .duration(1500)
+        .attr('cy', buttonY - 70)
+        .ease(d3.easeCubic)
         .attr('r', 28)
-        .attr('fill', 'url(#buttonGradient)');
-    var buttonGradient = defs.append('radialGradient')
-        .attr('id', 'buttonGradient')
-        .attr('x1', '0%')
-        .attr('x2', '100%')
-        .attr('y1', '0%')
-        .attr('y2', '100%')
-        .attr('spreadMethod', 'pad');
-    buttonGradient.append('stop')
-        .attr('offset', '80%')
-        .attr('stop-color', colorTen)
-        .attr('stop-opacity', 1);
-    buttonGradient.append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', colorTen)
-        .attr('stop-opacity', 0.6);
-
-    // Define button pulse
-    const buttonPulse = svgOne.append('circle')
-        .attr('id', 'buttonPulse')
-        .attr('cx', buttonX)
-        .attr('cy', buttonY)
-        .attr('r', 2)
-        .attr('fill', 'transparent')
-        .attr('stroke', 'url(#buttonPulseGradient)')
-        .attr('stroke-width', 15)
-    var buttonPulseGradient = defs.append('radialGradient')
-        .attr('id', 'buttonPulseGradient')
-        .attr('x1', '0%')
-        .attr('x2', '50%')
-        .attr('y1', '0%')
-        .attr('y2', '100%')
-        .attr('spreadMethod', 'pad');
-    buttonPulseGradient.append('stop')
-        .attr('offset', '50%')
-        .attr('stop-color', 'white')
-        .attr('stop-opacity', 0.5);
-    buttonPulseGradient.append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', 'white')
-        .attr('stop-opacity', 0);
-
-    // Define button text
-    var buttonTextPath = svgOne.append('path')
-        .attr('id', 'buttonPath')
-        // M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
-        .attr('d', `M${buttonX-30},${buttonY+260} A150,150 0 1,1 ${buttonX+30},${buttonY+260}`)
-        .style('fill', 'none')
-    const buttonText = svgOne.append('text')
-        .attr('id', 'buttonText')
-        .append('textPath')
-        .attr('xlink:href', '#buttonPath')
-        .text('Click me!')
-        .attr('font-size', 15)
-        .attr('startOffset', '50%')
-        .style('fill', colorNine)
-        .style('text-anchor','middle');
-
-    // Define the shadow and gradient
-    const buttonShadow = svgOne.append('ellipse')
-        .attr('id', 'buttonShadow')
-        .attr('cx', buttonShadowX)
-        .attr('cy', buttonShadowY)
-        .attr('rx', 35)
-        .attr('ry', 10)
-        .attr('fill', 'url(#shadowGradient)');
-    var shadowGradient = defs.append('radialGradient')
-        .attr('id', 'shadowGradient')
-        .attr('x1', '0%')
-        .attr('x2', '100%')
-        .attr('y1', '0%')
-        .attr('y2', '100%')
-        .attr('spreadMethod', 'pad');
-    shadowGradient.append('stop')
-        .attr('offset', '0%')
-        .attr('stop-color', colorTen)
-        .attr('stop-opacity', 0.6);
-    shadowGradient.append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', colorTen)
-        .attr('stop-opacity', 0);
-
-    // Loop bouncing animation of button
-    function bounceUp() {
-        button.transition()
-            .duration(1500)
-            .attr('cy', buttonY - 70)
-            .ease(d3.easeCubic)
-            .on('end', bounceDown);
-        buttonPulse.transition()
-            .duration(1500)
-            .attr('cy', buttonY - 70)
-            .ease(d3.easeCubic)
-            .attr('r', 28)
-            .attr('stroke-width', 2);
-        buttonTextPath.transition()
-            .duration(1500)
-            .attr('d', `M${buttonX-30},${buttonY+190} A150,150 0 1,1 ${buttonX+30},${buttonY+190}`)
-            .ease(d3.easeCubic);
-        buttonShadow.transition()
-            .duration(1500)
-            .attr('rx', 25)
-            .attr('ry', 7);
-    };
-    function bounceDown() {
-        button.transition()
-            .duration(1500)
-            .attr('cy', buttonY)
-            .ease(d3.easeCubic)
-            .on('end', bounceUp);
-        buttonPulse.transition()
-            .duration(1500)
-            .attr('cy', buttonY)
-            .ease(d3.easeCubic)
-            .attr('r', 2)
-            .attr('stroke-width', 10);
-        buttonTextPath.transition()
-            .duration(1500)
-            .attr('d', `M${buttonX-30},${buttonY+260} A150,150 0 1,1 ${buttonX+30},${buttonY+260}`)
-            .ease(d3.easeCubic);
-        buttonShadow.transition()
-            .duration(1500)
-            .attr('rx', 35)
-            .attr('ry', 10);
-    };
-    bounceUp();
+        .attr('stroke-width', 2);
+    buttonTextPath.transition()
+        .duration(1500)
+        .attr('d', `M${buttonX-30},${buttonY+190} A150,150 0 1,1 ${buttonX+30},${buttonY+190}`)
+        .ease(d3.easeCubic);
+    buttonShadow.transition()
+        .duration(1500)
+        .attr('rx', 25)
+        .attr('ry', 7);
 };
-welcomeTask();
+function bounceDown() {
+    button.transition()
+        .duration(1500)
+        .attr('cy', buttonY)
+        .ease(d3.easeCubic)
+        .on('end', bounceUp);
+    buttonPulse.transition()
+        .duration(1500)
+        .attr('cy', buttonY)
+        .ease(d3.easeCubic)
+        .attr('r', 2)
+        .attr('stroke-width', 10);
+    buttonTextPath.transition()
+        .duration(1500)
+        .attr('d', `M${buttonX-30},${buttonY+260} A150,150 0 1,1 ${buttonX+30},${buttonY+260}`)
+        .ease(d3.easeCubic);
+    buttonShadow.transition()
+        .duration(1500)
+        .attr('rx', 35)
+        .attr('ry', 10);
+};
+bounceUp();
+
 // Button interaction
 var counter = 0
 
@@ -411,7 +409,7 @@ function lBar() {
             .duration(1000)
             .attr('fill', 'transparent');
         loadingBarFull.transition()
-            .delay(24500)
+            .delay(24000)
             .duration(1000)
             .attr('fill', 'transparent')
             .on('end', robotTransition); // on end of loading bar call robot task
@@ -425,9 +423,7 @@ function lBar() {
 d3.selectAll('#startButton, #buttonPulse')
     .on('click', function() {
         if (counter == 7) {
-            svgOne.selectAll('#startButton').remove()
-            svgOne.selectAll('#buttonText').remove()
-            svgOne.selectAll('#buttonShadow').remove()
+            svgOne.selectAll('#startButton, #buttonText, #buttonShadow').remove()
         };
         websiteBackground(colorSeven, 3000);
         lBar();
@@ -435,6 +431,8 @@ d3.selectAll('#startButton, #buttonPulse')
 
 // are you a robot?
 function robotTransition() {
+    d3.selectAll('#loadingText, #loadingBar, #loadingBarFull').remove()
+
     const robotQuestion = svgOne.append('text')
         .attr('id', 'robotQuestion')
         .text('')
@@ -677,9 +675,8 @@ function robotItemRemove(elem) {
             .on('end', scrollDown); // on end add scrolldown transition
     };
 };
-scrollDown();
+
 function scrollDown() {
-    svgOne.selectAll('#robotGroup, #taskCounterText, #robotShadow').remove();
     websiteBackground('white', 3000); // change website background with transition effect
 
     const scrollDownText = svgOne.append('text')
@@ -725,8 +722,10 @@ function scrollDown() {
             entries, startScroll) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        alert('Error: Nothing has gone wrong! \n Keep scrolling...');
+                        alert('Error!\nNothing has gone wrong! Keep scrolling...');
                         startScroll.unobserve(canvasTwo);
+                        svgOne.selectAll('#robotGroup, #taskCounterText,\
+                            #robotShadow, #robotText, #robotQuestion').remove();
                     };
                 })
             }, startScrollOptions
@@ -743,7 +742,7 @@ function scrollDown() {
                     if (entry.isIntersecting) {
                         finishDownScroll.unobserve(canvasTwo);
                         scrollDownText.transition() 
-                            .text('Enter a passwort:');
+                            .text('Enter a passwort and hit enter:');
                         scrollUpText.transition()
                             .style('color', 'black')
                             .duration(1000)
@@ -758,7 +757,7 @@ function scrollDown() {
     setTimeout(newSvg, 2500)
 };
 
-function scrolledUp(callback) {
+function scrolledUp() {
     const finishUpScrollOptions = {
         threshold: 0.95,
         rootMargin: '0px 0px 0px 0px'
@@ -767,14 +766,30 @@ function scrolledUp(callback) {
         entries, finishUpScroll) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    var canvasTwo = document.getElementById('#canvasTwo');
+                    var canvasTwo = document.getElementById('canvasTwo');
                     canvasTwo.parentNode.removeChild(canvasTwo);
-                    callback();
+                    pwInput();
                 };
             })
         }, finishUpScrollOptions
     );
     finishUpScroll.observe(canvasOne);
+};
+
+function pwInput() {
+    var inputElem = document.createElement('input');
+    inputElem.className = 'inputPW';
+    inputElem.id = 'inputPW';
+    inputElem.placeholder = ' password goes here ';
+    canvasOne.appendChild(inputElem);
+
+    document.getElementById('inputPW').addEventListener('keypress', function (k) {
+        if (k.key === 'Enter') {
+            loadingCircles();
+            setTimeout(pwRules, 12000);
+            inputElem.parentNode.removeChild(inputElem)
+        }
+    })
 };
 
 function loadingCircles() {
@@ -833,22 +848,6 @@ function loadingCircles() {
         counter ++;
     };
 };
-pwInput();
-function pwInput() {
-    var inputElem = document.createElement('input');
-    inputElem.className = 'inputTW';
-    inputElem.id = 'inputPW';
-    inputElem.placeholder = ' password goes here ';
-    canvasOne.appendChild(inputElem);
-
-    document.getElementById('inputPW').addEventListener('keypress', function (k) {
-        if (k.key === 'Enter') {
-            loadingCircles();
-            setTimeout(pwRules, 12000);
-            inputElem.parentNode.removeChild(inputElem)
-        }
-    })
-};
 
 function pwRules() {
     const x = screenMidX / 2 - 100
@@ -903,7 +902,7 @@ function pwRules() {
         .text('- your favorite animal');
 
     var inputElem = document.createElement('input');
-    inputElem.className = 'inputTW';
+    inputElem.className = 'inputPW';
     inputElem.id = 'inputPW';
     inputElem.placeholder = ' password goes here ';
     canvasOne.appendChild(inputElem);
@@ -916,7 +915,17 @@ function pwRules() {
             loadingCircles();
             d3.selectAll('#pwRulesText, #scrollDownText').remove();
             inputElem.parentNode.removeChild(inputElem);
-            setTimeout(welcomeTask, 12000);
+            setTimeout(doneText, 12000)
         }
     });
 };
+
+function doneText() {
+    svgOne.append('text')
+        .attr('x', screenMidX)
+        .attr('y', screenMidY)
+        .style('text-anchor', 'middle')
+        .style('fill', colorSeven)
+        .style('font-size', '30px')
+        .text('You did it!')
+}
