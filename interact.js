@@ -916,7 +916,7 @@ function pwRules() {
     const pwRulesTextSeven = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x)
-        .attr('y', y + 110)
+        .attr('y', y + 132)
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
@@ -924,7 +924,7 @@ function pwRules() {
     const pwRulesTextEight = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x)
-        .attr('y', y + 110)
+        .attr('y', y + 154)
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
@@ -952,11 +952,15 @@ function pwRules() {
 function doneText() {
     svgOne.append('text')
         .attr('x', screenMidX)
-        .attr('y', screenMidY)
+        .attr('y', screenMidY - 30)
         .style('text-anchor', 'middle')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '30px')
-        .text('You did it!\n... but there is nothing here.')
-    var gitHub = document.createElement('a')
-    gitHub.href = 'https://github.com/danczw/Website_AnnoyingUX';
-}
+        .text('You did it!');
+    
+    var github = document.createElement('a');
+    github.className = 'githubLink'
+    github.href = 'https://github.com/danczw/Website_AnnoyingUX';
+    github.innerHTML = 'github: Annoying UI';
+    canvasOne.appendChild(github)
+};
