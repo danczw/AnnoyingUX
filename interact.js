@@ -1,13 +1,20 @@
-const colorOne = '#1AFE49' // glitch green
-const colorTwo = '#FF124F' // glitch pink
-const colorThree = '#120458' // glitch blue
-const colorFour = '#86a873' // matte olive green
-const colorFive = '#bb9f06' // matte yellow
-const colorSix = '#177e89' // turqouis
-const colorSeven = '#084c61' // dark turquois
-const colorEight = '#db3a34' // red
-const colorNine = '#ffc857' // yellow
-const colorTen = '#323031' // dark grey
+const colorBasicDark = '#292929' // dark grey
+const colorBasicLight = '#fffcf5' // white-ish
+
+const colorGlitchGreen = '#1AFE49' // glitch green
+const colorGlitchPink = '#FF124F' // glitch pink
+const colorGlitchBlue = '#120458' // glitch blue
+
+const colorBGDarkBlue = '#060024' // dark blue
+const colorBGDarkPurple = '#410979' // dark purple
+const colorBGPurple = '#cd00ff' // pink-purple
+
+const colorAccentGreen = '#86a873' // matte olive green
+const colorAccentYellow = '#bb9f06' // matte yellow
+const colorAccentRed = '#db3a34' // matte-ish red
+const colorAccentTurq = '#177e89' // turqouis
+const colorAccentDarkTurq = '#084c61' // dark turquois
+const colorAccentLightBlue = '#02fbff' // light turquois blue
 
 const svgOneSelector = document.getElementById('svgOne');
 const svgRect = svgOneSelector.getBoundingClientRect();
@@ -26,54 +33,35 @@ const svgOne = d3.select('#svgOne');
 const defs = svgOne.append('defs');
 
 // function for random colour picking
-const robotAllColors = [colorFour, colorFive, colorEight, colorTen];
-const robotSomeColors = [colorFour, colorFive, colorEight]
-const glitchAllColors = [colorOne, colorTwo, colorThree, 'white']
+const robotAllColors = [colorAccentGreen, colorAccentYellow, colorAccentRed, colorBasicDark];
+const robotSomeColors = [colorAccentGreen, colorAccentYellow, colorAccentRed]
+const glitchAllColors = [colorGlitchGreen, colorGlitchPink, colorGlitchBlue, colorBasicLight]
 function randColour(colourList) {
     return colourList[Math.floor(Math.random() * colourList.length)];
 };
 
 // change website background color
-function websiteBackground(colour=colorSix, speed) {
+function websiteBackground(gradient, color, speed) {
     const backgrCircle1 = svgOne.append('circle')
         .attr('id', 'backgrCircle')
         .attr('cx', screenMidX)
         .attr('cy', screenMidY)
-        .attr('r', 1)
-        .attr('fill', colour)
-    const backgrCircle2 = svgOne.append('circle')
-        .attr('id', 'backgrCircle')
-        .attr('cx', screenMidX)
-        .attr('cy', screenMidY)
-        .attr('r', 1)
-        .attr('fill', 'transparent')
-        .attr('stroke', 'url(#backgrCircle2Gradiant)')
-        .attr('stroke-width', 15)
-    var backgrCircle2Gradiant = defs.append('radialGradient')
-        .attr('id', 'backgrCircle2Gradiant')
-        .attr('x1', '0%')
-        .attr('x2', '50%')
-        .attr('y1', '0%')
-        .attr('y2', '100%')
-        .attr('spreadMethod', 'pad');
-    backgrCircle2Gradiant.append('stop')
-        .attr('offset', '70%')
-        .attr('stop-color', colour)
-        .attr('stop-opacity', 0.9);
-    backgrCircle2Gradiant.append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', colour)
-        .attr('stop-opacity', 0.01);
+        .attr('r', 0)
+        .attr('fill', color)
     backgrCircle1.transition()
         .attr('r', svgHeight * 2)
         .duration(speed)
-    backgrCircle2.transition()
-        .attr('r', svgHeight * 2)
-        .duration(speed)
         .on('end', websiteColour)
+    backgrCircle1.transition()
+        .attr('r', 0)
+        .duration(speed)
+        .delay(speed + 100)
+        .on('end', removeCircle)
         
     function websiteColour() {
-        document.body.style.backgroundColor = colour;
+        document.body.style.backgroundImage = gradient;
+    };
+    function removeCircle() {
         svgOne.selectAll('#backgrCircle').remove();
     };
 };
@@ -94,7 +82,7 @@ function glitch(wait) {
         .attr('id', 'glitchBackground')
         .attr('width', svgWidth)
         .attr('height', svgHeight)
-        .attr('fill', 'black');
+        .attr('fill', colorBasicDark);
     
     function glitchRect(glitchRectY) {
         svgOne.append('rect')
@@ -143,7 +131,7 @@ const welcomeText = svgOne.append('text')
     .attr('x', screenMidX)
     .attr('y', screenMidY / 3)
     .style('text-anchor', 'middle')
-    .style('fill', 'white')
+    .style('fill', colorBasicLight)
     .attr('font-size', 30)
     .text('Welcome!');
 
@@ -162,13 +150,13 @@ var buttonGradient = defs.append('radialGradient')
     .attr('y2', '100%')
     .attr('spreadMethod', 'pad');
 buttonGradient.append('stop')
-    .attr('offset', '80%')
-    .attr('stop-color', colorTen)
+    .attr('offset', '70%')
+    .attr('stop-color', colorBasicDark)
     .attr('stop-opacity', 1);
 buttonGradient.append('stop')
     .attr('offset', '100%')
-    .attr('stop-color', colorTen)
-    .attr('stop-opacity', 0.6);
+    .attr('stop-color', colorBasicDark)
+    .attr('stop-opacity', 0.2);
 
 // Define button pulse
 const buttonPulse = svgOne.append('circle')
@@ -188,11 +176,11 @@ var buttonPulseGradient = defs.append('radialGradient')
     .attr('spreadMethod', 'pad');
 buttonPulseGradient.append('stop')
     .attr('offset', '50%')
-    .attr('stop-color', 'white')
+    .attr('stop-color', colorAccentLightBlue)
     .attr('stop-opacity', 0.5);
 buttonPulseGradient.append('stop')
     .attr('offset', '100%')
-    .attr('stop-color', 'white')
+    .attr('stop-color', colorAccentLightBlue)
     .attr('stop-opacity', 0);
 
 // Define button text
@@ -208,7 +196,7 @@ const buttonText = svgOne.append('text')
     .text('Click me!')
     .attr('font-size', 15)
     .attr('startOffset', '50%')
-    .style('fill', colorNine)
+    .style('fill', colorBasicLight)
     .style('text-anchor','middle');
 
 // Define the shadow and gradient
@@ -228,11 +216,11 @@ var shadowGradient = defs.append('radialGradient')
     .attr('spreadMethod', 'pad');
 shadowGradient.append('stop')
     .attr('offset', '0%')
-    .attr('stop-color', colorTen)
+    .attr('stop-color', colorBasicDark)
     .attr('stop-opacity', 0.6);
 shadowGradient.append('stop')
     .attr('offset', '100%')
-    .attr('stop-color', colorTen)
+    .attr('stop-color', colorBasicDark)
     .attr('stop-opacity', 0);
 
 // Loop bouncing animation of button
@@ -323,23 +311,44 @@ function lBar() {
         .attr('x', screenMidX - ((svgWidth * 0.95) / 2))
         .attr('y', screenMidY)
         .attr('width', svgWidth * 0.95)
-        .attr('height', 10)
-        .attr('fill', '#177e89')
+        .attr('height', 12)
+        .attr('fill', 'url(#loadingBarFullGradient)')
         .attr('rx', 4);
+    var loadingBarFullGradient = defs.append('linearGradient')
+        .attr('id', 'loadingBarFullGradient')
+        .attr('x1', '0%')
+        .attr('x2', '100%')
+        .attr('y1', '0%')
+        .attr('y2', '100%')
+        .attr('spreadMethod', 'pad')
+        .attr('gradientTransform', `rotate(330,${0},${0})`);
+    loadingBarFullGradient.append('stop')
+        .attr('offset', '0%')
+        .attr('stop-color', colorBGDarkBlue)
+        .attr('stop-opacity', 0.8);
+    loadingBarFullGradient.append('stop')
+        .attr('offset', '50%')
+        .attr('stop-color', colorBGDarkPurple)
+        .attr('stop-opacity', 0.8);
+    loadingBarFullGradient.append('stop')
+        .attr('offset', '100%')
+        .attr('stop-color', colorBGPurple)
+        .attr('stop-opacity', 0.8);
+    
     const loadingBar = svgOne.append('rect')
         .attr('id', 'loadingBar')
         .attr('x', screenMidX - (lBarWidth / 2))
         .attr('y', screenMidY)
         .attr('width', lBarWidth)
-        .attr('height', 10)
-        .attr('fill', colorNine)
+        .attr('height', 12)
+        .attr('fill', colorBasicLight)
         .attr('rx', 4);
     const loadingText = svgOne.append('text')
         .attr('id', 'loadingText')
         .attr('x', screenMidX)
         .attr('y', screenMidY - 30)
         .style('text-anchor', 'middle')
-        .style('fill', 'white')
+        .style('fill', colorBasicDark)
         .attr('font-size', 20)
         .text('loading');
     
@@ -369,11 +378,10 @@ function lBar() {
         loadingTextTransition(16000);
         loadingTextTransition(20000);
         loadingText.transition()
-            .delay(24000)
-            .duration(1000)
+            .delay(23600)
             .text('loading complete!');
         loadingText.transition()
-            .delay(25000)
+            .delay(24500)
             .duration(1000)
             .style('fill', 'transparent')
     };
@@ -403,16 +411,16 @@ function lBar() {
             .duration(2000)
             .attr('x', screenMidX - ((svgWidth * 0.95) / 2))
             .attr('width', svgWidth * 0.95)
-            .attr('fill', colorTen);
+            .attr('fill', colorBasicDark);
         loadingBar.transition()
             .delay(24500)
             .duration(1000)
-            .attr('fill', 'transparent');
+            .attr('fill', 'transparent')
+            .on('end', robotTransition); // on end of loading bar call robot task
         loadingBarFull.transition()
             .delay(24000)
             .duration(1000)
-            .attr('fill', 'transparent')
-            .on('end', robotTransition); // on end of loading bar call robot task
+            .attr('fill', 'transparent');
     };
 
     loadingTextSequence();
@@ -425,7 +433,8 @@ d3.selectAll('#startButton, #buttonPulse')
         if (counter == 7) {
             svgOne.selectAll('#startButton, #buttonText, #buttonShadow').remove()
         };
-        websiteBackground(colorSeven, 3000);
+        newGradient = 'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)'
+        websiteBackground(newGradient, colorAccentTurq, 2000);
         lBar();
 });
 
@@ -440,7 +449,7 @@ function robotTransition() {
         .attr('y', svgHeight / 3)
         .attr('font-size', 25)
         .style('text-anchor', 'middle')
-        .style('fill', 'white');
+        .style('fill', colorBasicDark);
     
     // typewriter effect for robot question
     var i = 0;
@@ -548,11 +557,11 @@ function robotTaskPrep() {
         .attr('spreadMethod', 'pad');
     robotShadowGradient.append('stop')
         .attr('offset', '0%')
-        .attr('stop-color', colorTen)
+        .attr('stop-color', colorBasicDark)
         .attr('stop-opacity', 0.6);
     robotShadowGradient.append('stop')
         .attr('offset', '100%')
-        .attr('stop-color', colorTen)
+        .attr('stop-color', colorBasicDark)
         .attr('stop-opacity', 0);
 
     // text for robot task
@@ -563,7 +572,7 @@ function robotTaskPrep() {
         .attr('y', screenMidY + 290)
         .attr('font-size', 15)
         .style('text-anchor', 'middle')
-        .style('fill', 'white');
+        .style('fill', colorBasicDark);
     const taskCounterText = svgOne.append('text')
         .attr('id', 'taskCounterText')
         .text(robotTaskCounter)
@@ -571,7 +580,7 @@ function robotTaskPrep() {
         .attr('y', screenMidY + 100)
         .attr('font-size', svgHeight / 3)
         .style('text-anchor', 'middle')
-        .style('fill', colorTen);
+        .style('fill', colorBasicDark);
 
     // function to dynamically create fill colour of robot task group elements
     var colourCounter = 16
@@ -585,7 +594,7 @@ function robotTaskPrep() {
             } else {
                 d3.select(this).transition()
                     .duration(Math.floor(Math.random() * 2000))
-                    .attr('fill', colorTen);
+                    .attr('fill', colorBasicDark);
                 colourCounter --;
             };
         });
@@ -633,7 +642,7 @@ function robotItemHover() {
 };
 // change item color randomly on hover if not grey
 function robotItemColor(elem) {
-    if (d3.select(this).attr('fill') != 'rgb(50, 48, 49)') { // if item is not grey change color on hover
+    if (d3.select(this).attr('fill') != 'rgb(41, 41, 41)') { // if item is not grey change color on hover
         d3.select(this).transition()
             .attr('fill', randColour(robotAllColors));
     };
@@ -647,13 +656,13 @@ function robotItemClick() {
 };
 // roboTask: click and remove 5 grey-ish items to pass robot exam
 function robotItemRemove(elem) {
-    if ((d3.select(this).attr('fill') == 'rgb(50, 48, 49)') && (robotTaskCounter > 1)) {
+    if ((d3.select(this).attr('fill') == 'rgb(41, 41, 41)') && (robotTaskCounter > 1)) {
         d3.select(this).remove();
         robotTaskCounter --;
         d3.select('#taskCounterText').transition()
             .text(robotTaskCounter)
             .duration(0);
-    } else if ((d3.select(this).attr('fill') == 'rgb(50, 48, 49)') && (robotTaskCounter < 2)) {
+    } else if ((d3.select(this).attr('fill') == 'rgb(41, 41, 41)') && (robotTaskCounter < 2)) {
         const robotItemArray = document.querySelectorAll('#robotRect, #robotCircle, #robotRotateRect');
         robotItemArray.forEach(function(elem) {
             elem.removeEventListener('mouseover', robotItemColor);
@@ -668,6 +677,9 @@ function robotItemRemove(elem) {
                 .duration(Math.floor(Math.random() * 3000))
                 .attr('fill', 'transparent');
         });
+        d3.selectAll('#taskCounterText, #robotText, #robotQuestion').transition()
+            .style('fill', 'transparent')
+            .duration(1000)
         d3.select('#taskCounterText').transition()
             .attr('font-size', svgWidth * 8)
             .attr('y', screenMidY * 10)
@@ -677,8 +689,10 @@ function robotItemRemove(elem) {
 };
 
 function scrollDown() {
-    websiteBackground('white', 3000); // change website background with transition effect
-
+    newGrad = 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)'
+    websiteBackground(newGrad, colorBGDarkBlue, 2000); // change website background with transition effect
+    svgOne.selectAll('#robotGroup, #taskCounterText,\
+        #robotShadow, #robotText, #robotQuestion').remove();
     const scrollDownText = svgOne.append('text')
         .attr('id', 'scrollDownText')
         .attr('x', screenMidX)
@@ -686,9 +700,9 @@ function scrollDown() {
         .style('text-anchor', 'middle')
         .style('fill', 'transparent')
         .style('font-size', '30px')
-        .text('Scroll all the way down.');
+        .text('Scroll down.');
     d3.select('#scrollDownText').transition() 
-        .style('fill', 'black')
+        .style('fill', colorBasicDark)
         .duration(2000)
         .delay(2000);
     
@@ -710,9 +724,9 @@ function scrollDown() {
             .attr('x', screenMidX)
             .attr('y', screenMidY / 3)
             .style('text-anchor', 'middle')
-            .style('color', 'transparent')
+            .style('color', colorBasicDark)
             .style('font-size', '30px')
-            .text('Just kidding - You can scroll back up...');
+            .text('A bit more!');
 
         const startScrollOptions = {
             threshold: 0.5,
@@ -724,8 +738,6 @@ function scrollDown() {
                     if (entry.isIntersecting) {
                         alert('Error!\nNothing has gone wrong! Keep scrolling...');
                         startScroll.unobserve(canvasTwo);
-                        svgOne.selectAll('#robotGroup, #taskCounterText,\
-                            #robotShadow, #robotText, #robotQuestion').remove();
                     };
                 })
             }, startScrollOptions
@@ -744,7 +756,8 @@ function scrollDown() {
                         scrollDownText.transition() 
                             .text('Enter a passwort and hit enter:');
                         scrollUpText.transition()
-                            .style('color', 'black')
+                            .text('Just kidding - You can scroll back up...')
+                            .style('color', colorBasicDark)
                             .duration(1000)
                             .delay(1000);
                         scrolledUp();
@@ -822,27 +835,27 @@ function loadingCircles() {
         circle.transition()
             .attr('fill', color)
             .duration(800)
-            .delay(delayMultiplier*500+800);
+            .delay(delayMultiplier*500);
         circle.transition()
             .attr('fill', 'transparent')
             .duration(800)
-            .delay(delayMultiplier*500+1500);
+            .delay(delayMultiplier*500+600);
     };
 
     var counter = 0;
     var circleIndex = 1;
     while (counter<20) {
         if (circleIndex == 1) {
-            loadingCircleTransition(loadCircleOne, colorSeven, counter);
+            loadingCircleTransition(loadCircleOne, colorAccentDarkTurq, counter);
             circleIndex = 2;
         } else if (circleIndex == 2) {
-            loadingCircleTransition(loadCircleTwo, colorEight, counter);
+            loadingCircleTransition(loadCircleTwo, colorAccentRed, counter);
             circleIndex = 3;
         } else if (circleIndex == 3) {
-            loadingCircleTransition(loadCircleThree, colorFive, counter);
+            loadingCircleTransition(loadCircleThree, colorAccentYellow, counter);
             circleIndex = 4;
         } else if (circleIndex == 4) {
-            loadingCircleTransition(loadCircleFour, colorFour, counter);
+            loadingCircleTransition(loadCircleFour, colorAccentGreen, counter);
             circleIndex = 1;
         };
         counter ++;
@@ -857,7 +870,7 @@ function pwRules() {
         .attr('x', x - 50)
         .attr('y', y)
         .style('text-anchor', 'left')
-        .style('fill', colorSix)
+        .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
         .text('The password must include:');
     const pwRulesTextTwo = svgOne.append('text')
@@ -865,7 +878,7 @@ function pwRules() {
         .attr('x', x)
         .attr('y', y + 22)
         .style('text-anchor', 'left')
-        .style('fill', colorSix)
+        .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
         .text('- at least one upper case letter');
     const pwRulesTextThree = svgOne.append('text')
@@ -873,7 +886,7 @@ function pwRules() {
         .attr('x', x)
         .attr('y', y + 44)
         .style('text-anchor', 'left')
-        .style('fill', colorSix)
+        .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
         .text('- at least one lower case letter');
     const pwRulesTextFour = svgOne.append('text')
@@ -881,7 +894,7 @@ function pwRules() {
         .attr('x', x)
         .attr('y', y + 66)
         .style('text-anchor', 'left')
-        .style('fill', colorSix)
+        .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
         .text('- at least one number');
     const pwRulesTextFive = svgOne.append('text')
@@ -889,7 +902,7 @@ function pwRules() {
         .attr('x', x)
         .attr('y', y + 88)
         .style('text-anchor', 'left')
-        .style('fill', colorSix)
+        .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
         .text('- at least one special character: #+*-:,;_');
     const pwRulesTextSix = svgOne.append('text')
@@ -897,9 +910,25 @@ function pwRules() {
         .attr('x', x)
         .attr('y', y + 110)
         .style('text-anchor', 'left')
-        .style('fill', colorSix)
+        .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
         .text('- your favorite animal');
+    const pwRulesTextSeven = svgOne.append('text')
+        .attr('id', 'pwRulesText')
+        .attr('x', x)
+        .attr('y', y + 110)
+        .style('text-anchor', 'left')
+        .style('fill', colorAccentDarkTurq)
+        .style('font-size', '12px')
+        .text('- your grandparents name');
+    const pwRulesTextEight = svgOne.append('text')
+        .attr('id', 'pwRulesText')
+        .attr('x', x)
+        .attr('y', y + 110)
+        .style('text-anchor', 'left')
+        .style('fill', colorAccentDarkTurq)
+        .style('font-size', '12px')
+        .text('- a kidney');
 
     var inputElem = document.createElement('input');
     inputElem.className = 'inputPW';
@@ -925,7 +954,9 @@ function doneText() {
         .attr('x', screenMidX)
         .attr('y', screenMidY)
         .style('text-anchor', 'middle')
-        .style('fill', colorSeven)
+        .style('fill', colorAccentDarkTurq)
         .style('font-size', '30px')
-        .text('You did it!')
+        .text('You did it!\n... but there is nothing here.')
+    var gitHub = document.createElement('a')
+    gitHub.href = 'https://github.com/danczw/Website_AnnoyingUX';
 }
