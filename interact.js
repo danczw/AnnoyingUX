@@ -754,7 +754,7 @@ function scrollDown() {
                     if (entry.isIntersecting) {
                         finishDownScroll.unobserve(canvasTwo);
                         scrollDownText.transition() 
-                            .text('Enter a passwort and hit enter:');
+                            .text('Enter password and hit enter:');
                         scrollUpText.transition()
                             .text('Just kidding - You can scroll back up...')
                             .style('color', colorBasicDark)
@@ -888,7 +888,7 @@ function pwRules() {
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
-        .text('- at least one lower case letter');
+        .text('- not more than seven lower case letter');
     const pwRulesTextFour = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x)
@@ -896,7 +896,7 @@ function pwRules() {
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
-        .text('- at least one number');
+        .text('- a number bigger than 1492');
     const pwRulesTextFive = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x)
@@ -904,7 +904,7 @@ function pwRules() {
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
-        .text('- at least one special character: #+*-:,;_');
+        .text('- every special character exactly once: #+*-:,;_');
     const pwRulesTextSix = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x)
@@ -912,7 +912,7 @@ function pwRules() {
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
-        .text('- your favorite animal');
+        .text('- at least two favorite animals');
     const pwRulesTextSeven = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x)
@@ -920,7 +920,7 @@ function pwRules() {
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
-        .text('- your grandparents name');
+        .text('- one of your grandparents names');
     const pwRulesTextEight = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x)
@@ -928,7 +928,7 @@ function pwRules() {
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
         .style('font-size', '12px')
-        .text('- a kidney');
+        .text('- one kidney');
 
     var inputElem = document.createElement('input');
     inputElem.className = 'inputPW';
