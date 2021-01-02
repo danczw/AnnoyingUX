@@ -379,6 +379,7 @@ function lBar() {
         loadingTextTransition(20000);
         loadingText.transition()
             .delay(23600)
+            .style('fill', colorBasicDark)
             .text('loading complete!');
         loadingText.transition()
             .delay(24500)
