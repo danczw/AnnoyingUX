@@ -21,20 +21,20 @@ const svgRect = svgOneSelector.getBoundingClientRect();
 const svgWidth = svgRect.width;
 const svgHeight = svgRect.height;
 
-const screenMidX = svgWidth / 2
-const screenMidY = svgHeight / 2
-var buttonX = screenMidX
-var buttonY = screenMidY
-var buttonTextX = buttonX
-var buttonTextY = buttonY + 50
-var buttonShadowX = buttonX
-var buttonShadowY = buttonY + 40
+const screenMidX = svgWidth / 2;
+const screenMidY = svgHeight / 2;
+var buttonX = screenMidX;
+var buttonY = screenMidY;
+var buttonTextX = buttonX;
+var buttonTextY = buttonY + 50;
+var buttonShadowX = buttonX;
+var buttonShadowY = buttonY + 40;
 const svgOne = d3.select('#svgOne');
 const defs = svgOne.append('defs');
 
 // function for random colour picking
 const robotAllColors = [colorAccentGreen, colorAccentYellow, colorAccentRed, colorBasicDark];
-const robotSomeColors = [colorAccentGreen, colorAccentYellow, colorAccentRed]
+const robotSomeColors = [colorAccentGreen, colorAccentYellow, colorAccentRed];
 const glitchAllColors = [colorGlitchGreen, colorGlitchPink, colorGlitchBlue, colorBasicLight]
 function randColour(colourList) {
     return colourList[Math.floor(Math.random() * colourList.length)];
@@ -47,16 +47,16 @@ function websiteBackground(gradient, color, speed) {
         .attr('cx', screenMidX)
         .attr('cy', screenMidY)
         .attr('r', 0)
-        .attr('fill', color)
+        .attr('fill', color);
     backgrCircle1.transition()
         .attr('r', svgHeight * 2)
         .duration(speed)
-        .on('end', websiteColour)
+        .on('end', websiteColour);
     backgrCircle1.transition()
         .attr('r', 0)
         .duration(speed)
         .delay(speed + 100)
-        .on('end', removeCircle)
+        .on('end', removeCircle);
         
     function websiteColour() {
         document.body.style.backgroundImage = gradient;
@@ -68,12 +68,12 @@ function websiteBackground(gradient, color, speed) {
 
 // randomizing x and y coordinates
 function buttonXY() {
-    buttonX = ((svgWidth-60) * Math.random()) + 60
-    buttonY = ((svgHeight-200) * Math.random()) + 100
-    buttonTextX = buttonX
-    buttonTextY = buttonY + 50
-    buttonShadowX = buttonX
-    buttonShadowY = buttonY + 40
+    buttonX = ((svgWidth-60) * Math.random()) + 60;
+    buttonY = ((svgHeight-200) * Math.random()) + 100;
+    buttonTextX = buttonX;
+    buttonTextY = buttonY + 50;
+    buttonShadowX = buttonX;
+    buttonShadowY = buttonY + 40;
 };
 
 // glitch function
@@ -96,7 +96,7 @@ function glitch(wait) {
     var glitchList = [];
     for (i = 0; i < 300; i++) {
         glitchList.push(Math.floor(Math.random() * svgHeight))
-    }
+    };
     glitchList.forEach(glitchRect)
     setTimeout(() => svgOne.selectAll('#glitchRect, #glitchBackground').remove(), wait);
 
@@ -166,7 +166,7 @@ const buttonPulse = svgOne.append('circle')
     .attr('r', 2)
     .attr('fill', 'transparent')
     .attr('stroke', 'url(#buttonPulseGradient)')
-    .attr('stroke-width', 15)
+    .attr('stroke-width', 15);
 var buttonPulseGradient = defs.append('radialGradient')
     .attr('id', 'buttonPulseGradient')
     .attr('x1', '0%')
@@ -188,7 +188,7 @@ var buttonTextPath = svgOne.append('path')
     .attr('id', 'buttonPath')
     // M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
     .attr('d', `M${buttonX-30},${buttonY+260} A150,150 0 1,1 ${buttonX+30},${buttonY+260}`)
-    .style('fill', 'none')
+    .style('fill', 'none');
 const buttonText = svgOne.append('text')
     .attr('id', 'buttonText')
     .append('textPath')
@@ -269,7 +269,7 @@ function bounceDown() {
 bounceUp();
 
 // Button interaction
-var counter = 0
+var counter = 0;
 
 d3.selectAll('#buttonPulse, #startButton')
     .on('mouseover', function() {
@@ -384,7 +384,7 @@ function lBar() {
         loadingText.transition()
             .delay(24500)
             .duration(1000)
-            .style('fill', 'transparent')
+            .style('fill', 'transparent');
     };
 
     function loadingBarTransition(delay, duration, multiplier) {
@@ -434,7 +434,7 @@ d3.selectAll('#startButton, #buttonPulse')
         if (counter == 7) {
             svgOne.selectAll('#startButton, #buttonText, #buttonShadow').remove()
         };
-        newGradient = 'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)'
+        newGradient = 'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)';
         websiteBackground(newGradient, colorAccentTurq, 2000);
         lBar();
 });
@@ -475,13 +475,13 @@ function robotTransition() {
         };
     };
     typeWriter();
-    setTimeout(robotTaskPrep, 6000) // initialize robot task after text is writen
+    setTimeout(robotTaskPrep, 6000); // initialize robot task after text is writen
 };
 
 var robotTaskCounter = 5
 function robotTaskPrep() {
     const robotGroup = svgOne.append('svg:g')
-        .attr('id', 'robotGroup')
+        .attr('id', 'robotGroup');
     
     // create svg elements positioned in a square for robot task
     // create 5 rectangles
@@ -517,7 +517,7 @@ function robotTaskPrep() {
             .attr('cx', circle[1])
             .attr('cy', circle[2])
             .attr('r', 25)
-            .attr('fill', 'transparent')
+            .attr('fill', 'transparent');
     };
     robotCircles.forEach(createRobotCircle);
 
@@ -610,7 +610,7 @@ function robotTaskPrep() {
         robotShadow.transition()
             .duration(3000)
             .attr('rx', 150)
-            .attr('ry', 9)
+            .attr('ry', 9);
     };
     function RobotBounceDown() {
         robotGroup.transition()
@@ -627,7 +627,7 @@ function robotTaskPrep() {
     robotGroup.transition()
         .delay(1000)
         .duration(0)
-        .on('end', RobotBounceUp)
+        .on('end', RobotBounceUp);
     
     // call actual robotask items
     robotItemHover();
@@ -680,7 +680,7 @@ function robotItemRemove(elem) {
         });
         d3.selectAll('#taskCounterText, #robotText, #robotQuestion').transition()
             .style('fill', 'transparent')
-            .duration(1000)
+            .duration(1000);
         d3.select('#taskCounterText').transition()
             .attr('font-size', svgWidth * 8)
             .attr('y', screenMidY * 10)
@@ -709,15 +709,15 @@ function scrollDown() {
     
     // add new svg below first for scroll down, on scroll down start loading circle
     function newSvg() {
-        var canvasTwo = document.createElement('div')
-        canvasTwo.className = 'canvas'
-        canvasTwo.id = 'canvasTwo'    
-        document.body.appendChild(canvasTwo)
+        var canvasTwo = document.createElement('div');
+        canvasTwo.className = 'canvas';
+        canvasTwo.id = 'canvasTwo';
+        document.body.appendChild(canvasTwo);
         
-        var svgTwoDocElem = document.createElement('svg')
-        svgTwoDocElem.className = 'svg'
-        svgTwoDocElem.id = 'svgTwo'
-        canvasTwo.appendChild(svgTwoDocElem)
+        var svgTwoDocElem = document.createElement('svg');
+        svgTwoDocElem.className = 'svg';
+        svgTwoDocElem.id = 'svgTwo';
+        canvasTwo.appendChild(svgTwoDocElem);
         const svgTwo = d3.select('#svgTwo');
 
         const scrollUpText = svgTwo.append('text')
@@ -768,7 +768,7 @@ function scrollDown() {
         );
         finishDownScroll.observe(canvasTwo);
     };
-    setTimeout(newSvg, 2500)
+    setTimeout(newSvg, 2500);
 };
 
 function scrolledUp() {
@@ -802,7 +802,7 @@ function pwInput() {
             loadingCircles();
             setTimeout(pwRules, 12000);
             inputElem.parentNode.removeChild(inputElem)
-        }
+        };
     })
 };
 
@@ -864,8 +864,8 @@ function loadingCircles() {
 };
 
 function pwRules() {
-    const x = screenMidX / 2 - 100
-    const y = screenMidY / 1.5
+    const x = screenMidX / 2 - 100;
+    const y = screenMidY / 1.5;
     const pwRulesTextOne = svgOne.append('text')
         .attr('id', 'pwRulesText')
         .attr('x', x - 30)
@@ -938,14 +938,14 @@ function pwRules() {
     canvasOne.appendChild(inputElem);
 
     d3.select('#scrollDownText').transition() 
-        .text('Please try again:')
+        .text('Please try again:');
     
     document.getElementById('inputPW').addEventListener('keypress', function (k) {
         if (k.key === 'Enter') {
             loadingCircles();
             d3.selectAll('#pwRulesText, #scrollDownText').remove();
             inputElem.parentNode.removeChild(inputElem);
-            setTimeout(doneText, 12000)
+            setTimeout(doneText, 12000);
         }
     });
 };
@@ -960,8 +960,8 @@ function doneText() {
         .text('You did it!');
     
     var github = document.createElement('a');
-    github.className = 'githubLink'
+    github.className = 'githubLink';
     github.href = 'https://github.com/danczw/Website_AnnoyingUX';
     github.innerHTML = 'github: Annoying UX';
-    canvasOne.appendChild(github)
+    canvasOne.appendChild(github);
 };
