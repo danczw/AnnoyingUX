@@ -348,7 +348,7 @@ function lBar() {
         .attr('x', screenMidX)
         .attr('y', screenMidY - 30)
         .style('text-anchor', 'middle')
-        .style('fill', colorBasicDark)
+        .style('fill', colorBasicLight)
         .attr('font-size', 20)
         .text('loading');
     
@@ -867,7 +867,7 @@ function pwRules() {
     const y = screenMidY / 1.5
     const pwRulesTextOne = svgOne.append('text')
         .attr('id', 'pwRulesText')
-        .attr('x', x - 50)
+        .attr('x', x - 30)
         .attr('y', y)
         .style('text-anchor', 'left')
         .style('fill', colorAccentDarkTurq)
@@ -961,6 +961,6 @@ function doneText() {
     var github = document.createElement('a');
     github.className = 'githubLink'
     github.href = 'https://github.com/danczw/Website_AnnoyingUX';
-    github.innerHTML = 'github: Annoying UI';
+    github.innerHTML = 'github: Annoying UX';
     canvasOne.appendChild(github)
 };
